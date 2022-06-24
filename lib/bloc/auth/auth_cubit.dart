@@ -8,17 +8,18 @@ import 'package:hive_flutter/hive_flutter.dart';
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final UserRepository _userRepository = UserRepository();
-  AuthCubit() : super(AuthInitial());
+  final UserRepository userRepository;
+  final Box authBox;
+  AuthCubit(this.userRepository, this.authBox) : super(AuthInitial());
 
   login(LoginModel loginModel) async {
     emit(AuthLoading());
-    List<UserObj> users = await _userRepository.getUsers();
+    List<UserObj> users = await userRepository.getUsers();
     for (var element in users) {
       if(element.username == loginModel.username){
         if(element.password == loginModel.password){
-          Hive.box("auth").put("userId",element.id);
-          Hive.box("auth").put("admin",element.isAdmin);
+          authBox.put("userId",element.id);
+          authBox.put("admin",element.isAdmin);
           emit(const AuthSuccess(message: "Login Successful"));
           return;
         }
@@ -30,16 +31,16 @@ class AuthCubit extends Cubit<AuthState> {
   register(LoginModel loginModel) async {
     emit(AuthLoading());
 
-    List<UserObj> users = await _userRepository.getUsers();
+    List<UserObj> users = await userRepository.getUsers();
     for (var element in users) {
       if(element.username == loginModel.username){
         emit(const AuthRegisterError(message: "Already exist"));
         return;
       }
     }
-    int value = await _userRepository.createUser(loginModel: loginModel);
-    Hive.box("auth").put("userId",value);
-    Hive.box("auth").put("admin",loginModel.isAdmin);
+    int value = await userRepository.createUser(loginModel: loginModel);
+    authBox.put("userId",value);
+    authBox.put("admin",loginModel.isAdmin);
     emit(const AuthSuccess(message: "Registered Successfully"));
   }
 }

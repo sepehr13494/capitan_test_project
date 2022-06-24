@@ -5,12 +5,12 @@ import 'package:hive_flutter/hive_flutter.dart';
 part 'splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
-  SplashCubit() : super(SplashInitial());
+  final Box authBox;
+  SplashCubit(this.authBox) : super(SplashInitial());
 
   checkLogin() async {
     await Future.delayed(const Duration(seconds: 2));
-    await Hive.openBox("auth");
-    var userId = Hive.box("auth").get("userId",defaultValue: null);
+    var userId = authBox.get("userId",defaultValue: null);
     if(userId == null){
       emit(SplashLoggedOut());
     }else{

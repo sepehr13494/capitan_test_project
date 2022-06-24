@@ -1,3 +1,4 @@
+import 'package:capitan_test_project/models/badge_obj.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 part 'user_obj.g.dart';
@@ -17,5 +18,8 @@ class UserObj extends HiveObject {
   @HiveField(3)
   bool isAdmin;
 
-  UserObj( {this.id, required this.username, required this.password, required this.isAdmin});
+  @HiveField(4)
+  List<BadgeObj> badges;
+
+  UserObj( {this.id, required this.username, required this.password, required this.isAdmin, required this.badges});
 }

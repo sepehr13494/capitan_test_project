@@ -24,9 +24,17 @@ class MainError extends MainState{
 
 class MainLoaded extends MainState{
   final List<UserObj> users;
+  final bool isAdmin;
 
-  const MainLoaded({required this.users});
+  const MainLoaded({required this.users,required this.isAdmin});
 
   @override
   List<Object?> get props => [];
 }
+
+class AddBadgeSuccess extends MainState{
+
+  @override
+  List<Object?> get props => [];
+}
+

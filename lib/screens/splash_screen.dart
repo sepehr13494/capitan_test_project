@@ -1,7 +1,9 @@
 import 'package:capitan_test_project/bloc/splash/splash_cubit.dart';
+import 'package:capitan_test_project/injection_container.dart';
 import 'package:capitan_test_project/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -9,7 +11,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SplashCubit>(
-      create: (BuildContext context) => SplashCubit()..checkLogin(),
+      create: (BuildContext context) => SplashCubit(sl())..checkLogin(),
       child: Scaffold(
         body: BlocListener<SplashCubit, SplashState>(
           listener: (context, state) {
